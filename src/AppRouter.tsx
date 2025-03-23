@@ -2,7 +2,6 @@ import {BrowserRouter, Routes, Route, Navigate} from "react-router";
 import {AuthLayout} from "@/auth/layout/AuthLayout.tsx";
 import {LoginPage} from "@/auth/pages/LoginPage.tsx";
 import {RegisterPage} from "@/auth/pages/RegisterPage.tsx";
-import ChatPage from "@/chat/pages/ChatPage.tsx";
 import {lazy, Suspense} from "react";
 import {sleep} from "@/lib/sleep.ts";
 
@@ -10,6 +9,10 @@ const ChatLayout = lazy(async () => {
     await sleep(1500);
     return import("./chat/layout/ChatLayout.tsx")
 });
+
+
+const ChatPage = lazy(async () =>
+    import("./chat/pages/ChatPage.tsx"));
 
 export const AppRouter = () => {
     return (
