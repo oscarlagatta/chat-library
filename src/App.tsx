@@ -1,12 +1,11 @@
-import ChatLayout from "@/chat/layout/ChatLayout.tsx";
-import ChatPage from "@/chat/pages/ChatPage.tsx";
+import {AppRouter} from "@/AppRouter.tsx";
 
 function App() {
   return (
     <>
-        <ChatLayout>
-            <ChatPage />
-        </ChatLayout>    </>
+      <AppRouter />
+
+    </>
   )
 }
 
