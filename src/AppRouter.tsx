@@ -14,6 +14,9 @@ const ChatLayout = lazy(async () => {
 const ChatPage = lazy(async () =>
     import("./chat/pages/ChatPage.tsx"));
 
+const NotChatSelectedPage = lazy(async () =>
+    import("./chat/pages/NoChatSelectedPage.tsx"));
+
 export const AppRouter = () => {
     return (
         <BrowserRouter>
@@ -33,7 +36,8 @@ export const AppRouter = () => {
                         <ChatLayout />
                     </Suspense>
                 }>
-                    <Route index element={<ChatPage />} />
+                    <Route index element={<NotChatSelectedPage/>} />
+                    <Route path='/chat/:clientId' element={<ChatPage />} />
                 </Route>
 
 
