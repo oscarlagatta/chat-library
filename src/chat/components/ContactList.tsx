@@ -1,51 +1,40 @@
+import {useQuery} from "@tanstack/react-query";
 import {Button} from "@/components/ui/button.tsx";
 import {ScrollArea} from "@/components/ui/scroll-area.tsx";
 
-import {NavLink} from "react-router";
-
+import {NavLink, useParams} from "react-router";
+import {getClients} from "@/fake/fake-data.ts";
 
 export default function ContactList() {
-    return (
 
+    const { clientId } = useParams();
+
+    const {data: clients, isLoading} = useQuery({
+        queryKey: ['clients'],
+        queryFn: () => getClients(),
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    });
+
+    return (
         <ScrollArea className="h-[calc(100vh-64px)]">
             <div className="space-y-4 p-4">
                 <div className="space-y-1">
                     <h3 className="px-2 text-sm font-semibold">Contacts</h3>
                     <div className="space-y-1">
-                        <Button variant="secondary" className="w-full justify-start">
-                            <div className="h-6 w-6 rounded-full bg-blue-500 mr-2 flex-shrink-0 flex items-center justify-center text-white text-xs">
-                                G5
-                            </div>
-                            G5 Customer
-                        </Button>
-                        <Button variant="ghost" className="w-full justify-start" asChild>
-                            <NavLink to="/chat/1" className="flex items-center gap-2">
-                                <div className="h-6 w-6 rounded-full bg-green-500 mr-2 flex-shrink-0 flex items-center justify-center text-white text-xs">
-                                    JD
-                                </div>
-                                John Doe
-                            </NavLink>
-                        </Button>
-                        <Button variant="ghost" className="w-full justify-start" asChild>
-                            <NavLink to="/chat/2" className="flex items-center gap-2">
-                                <div className="h-6 w-6 rounded-full bg-purple-500 mr-2 flex-shrink-0 flex items-center justify-center text-white text-xs">
-                                    AS
-                                </div>
-                                Alice Smith
-                            </NavLink>
-                        </Button>
-                        <Button variant="ghost" className="w-full justify-start">
-                            <div className="h-6 w-6 rounded-full bg-yellow-500 mr-2 flex-shrink-0 flex items-center justify-center text-white text-xs">
-                                RJ
-                            </div>
-                            Robert Johnson
-                        </Button>
-                        <Button variant="ghost" className="w-full justify-start">
-                            <div className="h-6 w-6 rounded-full bg-pink-500 mr-2 flex-shrink-0 flex items-center justify-center text-white text-xs">
-                                EW
-                            </div>
-                            Emma Wilson
-                        </Button>
+                        {isLoading && <div>Loading...</div>}
+                        {clients?.map((client) => (
+
+                                <NavLink key={client.id} to={`/chat/${client.id}`} className={(isActive) => `flex items-center gap-2 ${isActive ? 'bg-gray-100 text-primary font-medium rounded-md' :'hover:bg-muted/50 rounded-md'}`}>
+                                    <div className={`h-6 w-6 rounded-full bg-gray-300 mr-2 flex-shrink-0 flex items-center justify-center text-xs ${clientId === client.id ? 'bg-blue-300 text-blue-600' : 'bg-blue-300'}`}>
+                                        {client.name.charAt(0)}
+                                        {client.name.charAt(1)}
+                                    </div>
+
+                                    <span className={`transition-all duration-300 ${clientId === client.id ? 'text-blue-600 font-medium': 'text-gray-600'}`}>{client.name}</span>
+                                </NavLink>
+
+
+                        ))}
                     </div>
                 </div>
                 <div className="pt-4 border-t mt-4">

@@ -4,12 +4,12 @@ import {LoginPage} from "@/auth/pages/LoginPage.tsx";
 import {RegisterPage} from "@/auth/pages/RegisterPage.tsx";
 import {lazy, Suspense} from "react";
 import {sleep} from "@/lib/sleep.ts";
+import {PrivateRoute} from "@/auth/components/PrivateRoute.tsx";
 
 const ChatLayout = lazy(async () => {
     await sleep(1500);
     return import("./chat/layout/ChatLayout.tsx")
 });
-
 
 const ChatPage = lazy(async () =>
     import("./chat/pages/ChatPage.tsx"));
@@ -33,7 +33,10 @@ export const AppRouter = () => {
                                 className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
                         </div>}
                     >
-                        <ChatLayout />
+                        <PrivateRoute isAuthenticated={true}>
+                            <ChatLayout />
+                        </PrivateRoute>
+
                     </Suspense>
                 }>
                     <Route index element={<NotChatSelectedPage/>} />
